@@ -1,10 +1,9 @@
 package br.com.Kevinlps.controllers;
 
-import br.com.Kevinlps.services.PersonServices;
+import br.com.Kevinlps.PersonServices;
 import br.com.Kevinlps.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,14 +15,16 @@ public class PersonController {
     @Autowired
     private PersonServices service;
 
-    @GetMapping(value = "/{id}",
+    @RequestMapping(value = "/{id}",
+        method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Person findById(@PathVariable("id") Long id) {
+    public Person findById(@PathVariable("id") String id) {
         return service.findById(id);
     }
 
-    @PostMapping(
+    @RequestMapping(
+        method = RequestMethod.POST,
         consumes = MediaType.APPLICATION_JSON_VALUE ,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -31,7 +32,8 @@ public class PersonController {
         return service.create(person);
     }
 
-    @PutMapping(
+    @RequestMapping(
+        method = RequestMethod.PUT,
         consumes = MediaType.APPLICATION_JSON_VALUE ,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -39,13 +41,16 @@ public class PersonController {
         return service.update(person);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
+
+    @RequestMapping(value = "/{id}",
+            method = RequestMethod.DELETE
+    )
+    public void deleteById(@PathVariable("id") String id) {
         service.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping (produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method=RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Person> findAll() {
         return service.findAll();
     }
