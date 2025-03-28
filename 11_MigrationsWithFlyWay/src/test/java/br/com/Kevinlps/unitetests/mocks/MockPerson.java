@@ -1,6 +1,6 @@
 package br.com.Kevinlps.unitetests.mocks;
 
-import br.com.Kevinlps.data.dto.v1.PersonDTO;
+import br.com.Kevinlps.data.dto.PersonDTO;
 import br.com.Kevinlps.model.Person;
 
 import java.util.ArrayList;

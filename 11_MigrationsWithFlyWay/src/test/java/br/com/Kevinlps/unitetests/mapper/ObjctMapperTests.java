@@ -4,7 +4,7 @@ import static br.com.Kevinlps.mapper.ObjctMapper.parseObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-import br.com.Kevinlps.data.dto.v1.PersonDTO;
+import br.com.Kevinlps.data.dto.PersonDTO;
 import br.com.Kevinlps.model.Person;
 import br.com.Kevinlps.unitetests.mocks.MockPerson;
 import org.junit.jupiter.api.BeforeEach;

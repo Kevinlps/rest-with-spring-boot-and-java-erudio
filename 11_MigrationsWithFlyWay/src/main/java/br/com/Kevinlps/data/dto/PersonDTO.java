@@ -1,4 +1,4 @@
-package br.com.Kevinlps.data.dto.v1;
+package br.com.Kevinlps.data.dto;
 
 
 import java.io.Serializable;
