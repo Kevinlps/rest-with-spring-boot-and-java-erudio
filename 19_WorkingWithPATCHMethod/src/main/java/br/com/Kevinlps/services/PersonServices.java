@@ -3,8 +3,10 @@ package br.com.Kevinlps.services;
 import br.com.Kevinlps.controllers.PersonController;
 import br.com.Kevinlps.data.dto.PersonDTO;
 import br.com.Kevinlps.exception.RequiredObjectIsNullException;
+import br.com.Kevinlps.exception.ResourceNotFoundException;
 import br.com.Kevinlps.model.Person;
 import br.com.Kevinlps.repository.PersonRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,11 +86,27 @@ public class PersonServices {
                 .orElseThrow(() -> new RequiredObjectIsNullException("No records found for this ID"));
         repository.delete(entity);
     }
+
+    @Transactional
+    public PersonDTO disablePerson(Long id) {
+
+        logger.info("Disabling one Person!");
+
+        repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+        repository.disablePerson(id);
+
+        var entity = repository.findById(id).get();
+        var dto = parseObject(entity, PersonDTO.class);
+        addHateoasLink(dto);
+        return dto;
+    }
     private void addHateoasLink( PersonDTO dto) {
         dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).deleteById(dto.getId())).withRel("delete").withType("DELETE"));
         dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
+        dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
     }
 }
